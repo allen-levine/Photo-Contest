@@ -1,0 +1,351 @@
+{% editable_setting show_winner type:"boolean" default:false %}
+{% editable_setting theme_color type:"string" default:"0b85d4" %}
+{% editable_setting theme_font type:"string" default:"Helvetica,Tahoma,Arial,sans-serif" %}
+
+{% contest name:"photo-contest-template" %}
+
+<style type="text/css">
+/* Override styles */
+*,input,select { font-family:{{ theme_font }}; }
+body { max-width:none; font-size:12px; color:#333333; }
+h1,h2,h3,h4,h5,h6 { margin:0px; }
+p {}
+a { color:#{{ theme_color }}; }
+ul,li { margin:0px; padding:0px; list-style:none; }
+.ui-dialog .ui-dialog-title { display:none; }
+.ui-widget { font-size:12px; }
+.themecolor { color:#ffffff; background-color:#{{ theme_color }}; }
+.bgcolor { background-color:#f1f1f1; }
+.border { border:1px solid #e0e0e0; }
+.rounded { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; -khtml-border-radius:3px; }
+.morerounded { border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; -khtml-border-radius:5px; }
+.inactive { cursor:auto !important; }
+
+/* General styles */
+.inv-wrapper { width:520px; margin:0px auto; }
+
+/* Header */
+.inv-header { margin-bottom:10px; }
+.inv-header img { display:block; }
+
+/* Form */
+.inv-form { margin-bottom:10px; padding:10px; }
+.inv-form .sml-contest-form-link { padding:12px; display:block; text-decoration:none; text-align:center; font-size:30px; cursor:pointer; }
+.inv-form .form-container { display:none; overflow:hidden; }
+.inv-form .form-container .status { padding:10px 10px 0px; font-style:italic; text-align:center; }
+.inv-form .form-left, .inv-form .form-right { padding:8px 0px; width:248px; }
+.inv-form .form-left { float:left; }
+.inv-form .form-right { float:right; }
+.inv-form ul li { margin:12px 0px 0px; }
+.inv-form ul li > * { margin-left:70px; font-size:14px; }
+.inv-form ul li label { float:left; margin:2px 0px 0px 0px; width:60px; text-align:right; }
+.inv-form ul li input[type="text"], .inv-form ul li textarea { display:block; padding:4px 3px;width:155px; border:1px solid #c8c8c8; background-color:#ffffff; }
+.inv-form ul li textarea { height:50px; }
+.inv-form ul li object { display:block; }
+.inv-form ul li .uploadifyQueueItem { width:150px; }
+.inv-form .submit-button { display:block; padding:6px 0px; width:162px; font-size:15px; text-align:center; cursor:pointer; border:none; }
+.inv-form input.error, .inv-form textarea.error { background-color:#ffffff; }
+.inv-form span.error { display:block; font-size:12px; background:none; }
+.inv-form .confirm { padding:15px 15px 5px; }
+.inv-form .confirm h3 { margin-left:170px; padding:0px 0px 5px; border-bottom:1px solid #c8c8c8; font-size:26px; font-weight:normal; }
+.inv-form .confirm p { margin:10px 0px 10px 170px; font-size:14px; color:#666666; }
+.inv-form .confirm .image { float:left; padding:5px; background-color:#ffffff; border:1px solid #c8c8c8; }
+.inv-form .confirm .image img { display:block; }
+
+/* Entries */
+.inv-entries {}
+.inv-entries h2 { font-size:26px; font-weight:normal; }
+.inv-entries .sort { position:relative; float:right; width:200px; }
+.inv-entries .sort label { font-size:16px; line-height:28px; }
+.inv-wrapper .sort .dropdown { position:absolute; top:0px; right:0px; margin:0px 0px 10px; width:135px; font-size:13px; cursor:pointer; background-color:#ffffff; }
+.inv-wrapper .sort .dropdown .arrow { float:right; width:35px; height:28px; background-image:url({% editable_image name:"photo_contest_dropdown_arrow" src_only:true %}); background-repeat:no-repeat; background-position:center center; }
+.inv-wrapper .sort .dropdown .selected { display:block; padding:0px 10px; line-height:28px; }
+.inv-wrapper .sort .dropdown ul { display:none; margin:0px; color:#999999; }
+.inv-wrapper .sort .dropdown ul li { padding:5px 10px; display:block; float:none; width:auto; }
+.inv-wrapper .sort .dropdown ul li:hover { background-color:#eeeeee; }
+.inv-wrapper .sort .dropdown.open ul { display:block; }
+.inv-entries ul { margin:10px 0px; overflow:hidden; }
+.inv-entries ul li { float:left; width:239px; padding:10px; }
+.inv-entries ul li.empty { margin:0px 10px; text-align:center; width:auto; float:none; clear:both; overflow:hidden; }
+.inv-entries ul li.divider { float:none; clear:both; overflow:hidden; margin:0px 10px; padding:0px; border-top:1px solid #e0e0e0; height:1px; width:498px; }
+.inv-entries ul li h3 { margin:0px 0px 0px 90px; font-size:16px; font-weight:normal; }
+.inv-entries ul li p { margin:2px 0px 0px 90px; color:#666666; text-transform:uppercase; }
+.inv-entries ul li .image { float:left; margin:0px; width:80px; height:80px; cursor:pointer; }
+.inv-entries ul li .vote-button { display:block; margin:8px 0px 0px 90px; padding:2px; width:75px; text-align:center; cursor:pointer; }
+.inv-entries .pagination {  }
+.inv-entries .paginate-links { position:relative; padding:8px 15px; text-align:center; }
+.inv-entries .paginate-links .disabled { display:none; }
+.inv-entries .paginate-current, .inv-entries .paginate-number {}
+.inv-entries .paginate-current { color:#{{ theme_color }}; font-weight:bold; }
+.inv-entries .paginate-previous, .inv-entries .paginate-next { position:absolute; }
+.inv-entries .paginate-previous { left:15px; }
+.inv-entries .paginate-next { right:15px; }
+.inv-entries .paginate-previous a, .inv-entries .paginate-next a { display:block; width:8px; height:16px; text-indent:-8000px; overflow:hidden; background:transparent url({% editable_image name:"photo_contest_pagination_arrows" src_only:true %}) no-repeat; }
+.inv-entries .paginate-previous a { background-position:0px 0px; }
+.inv-entries .paginate-next a { background-position:-8px 0px; }
+
+/* Individual entry */
+.inv-entry {}
+.inv-entry .icon { float:left; margin:0px 0px 10px; width:50px; height:50px; }
+.inv-entry h3 { margin-left:60px; font-size:16px; }
+.inv-entry p { margin:0px 0px 10px 60px; font-size:14px; }
+.inv-entry .votes { float:right; margin:0px 0px 10px 10px; text-align:right; }
+.inv-entry .vote-button { display:inline-block; margin:0px 0px 5px; padding:5px; width:85px; font-size:16px; text-align:center; cursor:pointer; }
+.inv-entry .vote-description { display:block; font-size:14px; font-weight:bold; }
+.inv-entry .photo { display:block; clear:both; margin:0px 0px 10px; width:450px; }
+
+/* Winner */
+.inv-winner { margin-bottom:10px; padding:25px; background-color:#252b30; color:#ffffff; }
+.inv-winner.inv-entry h3, .inv-winner.inv-entry p { margin-left:65px; }
+.inv-winner.inv-entry .icon { margin-bottom:15px; border:3px solid #ffffff; }
+.inv-winner.inv-entry .photo { margin:0px; border:3px solid #ffffff; width:464px; }
+.inv-winner.inv-entry .votes { margin-bottom:15px; padding:10px; background-color:#66cc33; font-size:14px; text-align:center; }
+.inv-winner.inv-entry .votes .vote-count { display:block; font-weight:bold; font-size:26px; }
+</style>
+
+<!--[if IE]>
+<style type="text/css">
+.inv-entries ul li { display:inline; }
+.inv-entries ul li.divider { zoom:1; }
+</style>
+<![endif]-->
+
+<script type="text/javascript">
+<!--
+var UTIL = {
+  dialog : function(dialog_title, dialog_body, dialog_width) {
+    var d = new sml.ui.PlatformDialog({
+      title : dialog_title,
+      body : dialog_body,
+      width : dialog_width
+    });
+    return d;
+  }
+};
+var CONTEST = {
+  form : {
+    validation : {
+      'submission[name]' : { required:true },
+      'submission[email]' : { required:true, email:true },
+      'submission[phone]' : { required:true, phoneUS:true },
+      'submission[zip]' : { required:true, digits:true, rangelength:[5,5] },
+      'submission[photo]' : { required:true },
+      'submission[title]' : { required:true }
+    },
+    errors : {
+      'submission[email]' : { email:"Please enter a valid email address." },
+      'submission[phone]' : { phoneUS:"Please enter a valid phone number." },
+      'submission[zip]' : { digits:"Please enter a valid zip code.", rangelength:"Please enter a valid zip code." }
+    },
+    show : function(){
+      $("#form_container").show();
+    }
+  },
+  view_entry : function(obj){
+    sml.tag.Partial.get('photo_contest_entry').render({
+      locals: { entry : obj },
+      success: function(html) {
+        UTIL.dialog("", html, 450).show();
+        $(".inv-entry .vote-button").click(function(){
+          var vote_button = $(this);
+          var vote_description = $(".inv-entry .vote-description");
+          var entry_id = parseInt($(this).attr("entry-id"));
+          CONTEST.vote(entry_id, vote_button, vote_description, "Total Vote");
+        });
+      },
+      error: function() {}
+    });
+  },
+  vote : function(entry_id, vote_button, vote_container, vote_text){
+    vote_button.text("Voting...");
+    sml.service.VoteService.vote(entry_id, 90, {
+      success: function(response){
+        if (response.vote_count) {
+          var vote_plural = (response.vote_count == 1) ? "" : "s";
+          vote_container.text(response.vote_count + " " + vote_text + vote_plural);
+          vote_button.text("Voted!").unbind("click").addClass("inactive");
+        }
+        else if (response.error) {
+          UTIL.dialog("", response.error, 300).show();
+          vote_button.text("Voted!").unbind("click").addClass("inactive");
+        }
+      }
+    });
+  },
+  init : function(){
+    $(".inv-entries ul li .vote-button").click(function(){
+      var vote_button = $(this);
+      var vote_description = $(this).prev("p");
+      var entry_id = parseInt($(this).attr("entry-id"));
+      CONTEST.vote(entry_id, vote_button, vote_description, "vote");
+    });
+  }
+};
+$(document).ready(function() {
+  $(".inv-wrapper .sort .dropdown .selected, .inv-wrapper .sort .dropdown .arrow").click(function(){
+    var dropdown_selected = $(".inv-wrapper .sort .dropdown");
+    if (dropdown_selected.hasClass("open")) { dropdown_selected.removeClass("open"); }
+    else { dropdown_selected.addClass("open"); }
+  });
+  $(".inv-wrapper .sort .dropdown ul li").click(function(){
+    var current = $(".inv-wrapper .sort .dropdown .selected").text();
+    var selected = $(this).text();
+    if (selected != current) {
+      $(".inv-wrapper .sort .dropdown .selected").text(selected);
+      sml.tag.Partial.get('photo_contest_pagination').render({
+        locals: { contest : {{ contest | serialize }}, pagination_sort : $(this).attr("sort") },
+        success: function(html) {
+          $(".inv-paginate").html(html);
+        },
+        error: function() {}
+      });
+    }
+    $(".inv-wrapper .sort .dropdown").removeClass("open");
+  });
+  CONTEST.init();
+});
+//--> 
+</script>
+
+{% partial name:"photo_contest_form" %}
+  {% contest_form rules_var:"CONTEST.form.validation" messages_var:"CONTEST.form.errors" %}
+    <ul class="form-left">
+      <li>
+        <label>Name</label>
+        <input class="rounded" name="submission[name]" type="text" />
+      </li>
+      <li>
+        <label>Email</label>
+        <input class="rounded" name="submission[email]" type="text" />
+      </li>
+      <li>
+        <label>Phone</label>
+        <input class="rounded" name="submission[phone]" type="text" />
+      </li>
+      <li>
+        <label>Zip</label>
+        <input class="rounded" name="submission[zip]" type="text" />
+      </li>
+    </ul>
+    <ul class="form-right">
+      <li>
+        <label>Title</label>
+        <textarea class="rounded" name="submission[title]"></textarea>
+      </li>
+      <li>
+        <label>Photo</label>
+        {% image_upload_field name:"submission[photo]" %}
+      </li>
+      <li>
+        <input class="submit-button rounded themecolor" type="submit" value="Submit">
+      </li>
+    </ul>
+  {% endcontest_form %}
+{% endpartial %}
+
+{% partial name:"photo_contest_success" %}
+  <!-- Declaring editable HTML tags to make context variables available
+    {% editable_html name:"photo_contest_confirmation_copy" %}
+  -->
+  <div class="confirm">
+    <span class="image"><img src="{{ contest_entry.submission.photo | resize_to:'145' | replace:'145x145','145' }}" /></span>
+    <h3>Thank You!</h3>
+    <p>{{ html_photo_contest_confirmation_copy.main_text_body | strip_html | escape_html }}</p>
+  </div>
+{% endpartial %}
+
+{% partial name:"photo_contest_entry" %}
+  <div class="inv-entry">
+    <div class="votes">
+      <span class="vote-button rounded themecolor" entry-id="{{ entry.id }}">Vote</span>
+      <span class="vote-description">{{ entry.vote_count }} Total Vote{% if entry.vote_count != 1 %}s{% endif %}</span>
+    </div>
+    <img class="icon" src="{{ entry.contest_user.big_mug | resize_to:'square' | resize_to:'50' }}" />
+    <h3>{{ entry.submission.title }}</h3>
+    <p><em>by</em> {{ entry.submission.name }}</p>
+    <img class="photo" src="{{ entry.submission.photo | resize_to:'450' | replace:'450x450','450' }}" />
+  </div>
+{% endpartial %}
+
+{% partial name:"photo_contest_pagination" %}
+  {% paginate contest.contest_entries per_page:8 order:pagination_sort on_page_load:"CONTEST.init();" inner_window:2 %}
+    <ul class="bgcolor border rounded">
+      {% for entry in contest_entries %}
+        {% capture_int remainder %}{{ forloop.index | mod:2 }}{% endcapture_int %}
+        <li>
+          <img class="image" src="{{ entry.submission.photo | resize_to:'square' | resize_to:'80' }}" onclick='CONTEST.view_entry({{ entry | serialize | escape_js_handler }});' />
+          <h3>{{ entry.submission.title }}</h3>
+          <p>{{ entry.vote_count }} vote{% if entry.vote_count != 1 %}s{% endif %}</p>
+          <span class="vote-button morerounded themecolor" entry-id="{{ entry.id }}">Vote</span>
+        </li>
+        {% if remainder == 0 and forloop.last == false %}
+          <li class="divider"></li>
+        {% endif %}
+      {% endfor %}
+      {% if contest.contest_entries.size == 0 %}
+        <li class="empty">
+          No entries submitted/approved yet!
+        </li>
+      {% endif %}
+    </ul>
+    {% if contest.contest_entries.size > 8 %}
+      <div class="pagination rounded bgcolor border">
+        {{ pagination_links }}
+      </div>
+    {% endif %}
+  {% endpaginate %}
+{% endpartial %}
+
+<div class="inv-wrapper">
+  <div class="inv-header">
+    {% if show_winner %}
+      {% editable_image name:"photo_contest_banner_winner" %}
+    {% else %}
+      {% editable_image name:"photo_contest_banner_default" %}
+    {% endif %}
+  </div><!-- /.inv-header -->
+  {% if show_winner %}
+    {% if contest.winning_contest_entries.size > 0 %}
+      {% assign winning_entry = contest.winning_contest_entries.first %}
+    {% else %}
+      {% paginate contest.contest_entries order:"vote_count DESC,created_at DESC" %}
+        {% assign winning_entry = contest_entries.first %}
+      {% endpaginate %}
+    {% endif %}
+    <div class="inv-winner inv-entry rounded">
+      <div class="votes rounded">
+        <span class="vote-count">{{ winning_entry.vote_count }}</span> Total Vote{% if entry.vote_count != 1 %}s{% endif %}
+      </div>
+      <img class="icon" src="{{ winning_entry.contest_user.big_mug | resize_to:'square' | resize_to:'50' }}" />
+      <h3>{{ winning_entry.submission.title }}</h3>
+      <p><em>by</em> {{ winning_entry.submission.name }}</p>
+      <img class="photo" src="{{ winning_entry.submission.photo | resize_to:'464' | replace:'464x464','464' }}" />
+    </div><!-- /.inv-winner -->
+  {% else %}
+    <div class="inv-form bgcolor border rounded">
+      {% contest_form_link class:"morerounded themecolor" onclick:"CONTEST.form.show();" entry_form_partial:"photo_contest_form" success_partial:"photo_contest_success" div_id:"form_container" %}Submit a Photo{% endcontest_form_link %}
+      <div class="form-container" id="form_container">
+        <div class="status">Loading submission form...</div>
+      </div>
+    </div><!-- /.inv-form -->
+  {% endif %}
+  <div class="inv-entries">
+    <div class="sort">
+      <label>Sort By</label>
+      <div class="dropdown rounded border">
+        <span class="arrow themecolor"></span>
+        <span class="selected">Most Recent</span>
+        <ul>
+          <li sort="published_at DESC,created_at DESC">Most Recent</li>
+          <li sort="vote_count DESC,created_at DESC">Most Votes</li>
+        </ul>
+      </div>
+    </div><!-- /.sort -->
+    <h2>Entries</h2>
+    <div class="inv-paginate">
+      {% render partial:"photo_contest_pagination" contest:contest pagination_sort:"published_at DESC,created_at DESC" %}
+    </div>
+  </div><!-- /.inv-entries -->
+</div><!-- /.inv-wrapper -->
+
+{% endcontest %}
